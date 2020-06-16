@@ -26,41 +26,47 @@ function Snake() {
         this.x += this.xSpeed;
         this.y += this.ySpeed;
 
-        if (this.x > canvas.width) {
+        if (this.x > canvas.width - scale) {
             this.x = 0
         }
 
-        if (this.y > canvas.height) {
+        if (this.y > canvas.height - scale) {
             this.y = 0
         }
 
         if (this.x < 0) {
-            this.x = canvas.width
+            this.x = canvas.width - scale
         }
 
         if (this.y < 0) {
-            this.y = canvas.height
+            this.y = canvas.height - scale
         }
     }
 
     this.changeDirection = function(direction) {
-        switch(direction) {
-            case 'Up' || 'w':
+        
+        console.log('Direction: ' + direction)
+
+        if (direction == 'Up' || direction == 'w') {
+            if (this.ySpeed <= 0) {
                 this.xSpeed = 0;
                 this.ySpeed = -1 * scale;
-                break
-            case 'Down' || 's':
+            }
+        } else if (direction == 'Down' || direction == 's') {
+            if (this.ySpeed >= 0) {
                 this.xSpeed = 0;
                 this.ySpeed = 1 * scale;
-                break
-            case 'Left' || 'a':
+            }
+        } else if (direction == 'Left' || direction == 'a') {
+            if (this.xSpeed <= 0) {
+                this.ySpeed = 0;
                 this.xSpeed = -1 * scale;
+            }
+        } else if (direction == 'Right' || direction == 'd') {
+            if (this.xSpeed >= 0) {
                 this.ySpeed = 0;
-                break
-            case 'Right' || 'd':
                 this.xSpeed = 1 * scale;
-                this.ySpeed = 0;
-                break
+            }
         }
     }
 
@@ -71,6 +77,15 @@ function Snake() {
         } else {
             return false
         }
+    }
+
+    this.lose = function() {
+        for (let i = 0; i < this.tail.length; i++) {
+            if (this.x == this.tail[i].x && this.y == this.tail[i].y) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
